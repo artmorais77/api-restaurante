@@ -1,7 +1,6 @@
 {
   "name": "api-restaurante",
   "version": "1.0.0",
-  "type": "module",
   "description": "API para gerenciar pedidos de um restaurante",
   "main": "index.js",
   "scripts": {
