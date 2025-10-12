@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { knex } from "@/database/knex.js";
-import { z } from "zod";
+import { number, z } from "zod";
 import { AppError } from "@/utils/AppError.js";
 
 class OrdersController {
@@ -24,6 +24,21 @@ class OrdersController {
         .where({ table_session_id });
 
       res.status(200).json(orders);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async showResume(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { table_session_id } = req.params;
+
+      const order = await knex("orders")
+        .select(knex.raw("COALESCE(SUM(price * quantity), 0) AS total"))
+        .select(knex.raw("COALESCE(SUM(quantity), 0) AS quantity"))
+        .where({ table_session_id });
+
+      return res.status(200).json(order);
     } catch (error) {
       next(error);
     }
