@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable("tables_sessions", (table) => {
     table.increments("id").primary(),
     table.integer("table_id").notNullable().references("id").inTable("tables"),
-    table.timestamp("create_at").defaultTo(knex.fn.now()),
+    table.timestamp("opened_at").defaultTo(knex.fn.now()),
     table.time("closed_at")
   })
 }
