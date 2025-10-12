@@ -11,7 +11,7 @@ class TablesSessionsController {
         "tables_sessions"
       )
         .select()
-        .orderBy("table_id");
+        .orderBy("closed_at");
 
       return res.status(200).json(tablesSessions);
     } catch (error) {
