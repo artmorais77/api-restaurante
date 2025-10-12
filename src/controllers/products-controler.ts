@@ -5,7 +5,13 @@ import { z } from "zod";
 class ProductController {
   async index(req: Request, res: Response, next: NextFunction) {
     try {
-      res.status(200).json("ok");
+      const { name } = req.query;
+      const products = await knex<ProductRepository>("products")
+        .select()
+        .whereLike("name", `%${name ?? ""}%`)
+        .orderBy("name");
+
+      res.status(200).json(products);
     } catch (error) {
       next(error);
     }
@@ -20,11 +26,11 @@ class ProductController {
 
       const { name, price } = bodySchema.parse(req.body);
 
-      await knex<ProductRepository>("products").insert({ name, price })
+      await knex<ProductRepository>("products").insert({ name, price });
 
       return res.status(201).json({ name, price });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 }
